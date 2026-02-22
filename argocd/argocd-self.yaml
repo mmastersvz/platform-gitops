@@ -14,6 +14,8 @@ spec:
         configs:
           params:
             server.insecure: true
+          cm:
+            application.instanceLabelKey: app.kubernetes.io/instance
         server:
           service:
             type: ClusterIP
