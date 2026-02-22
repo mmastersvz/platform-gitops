@@ -1,5 +1,0 @@
-image:
-  repository: k3d-platform-registry.localhost:5001/sample-app
-  tag: latest
-
-replicaCount: 2
