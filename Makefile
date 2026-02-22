@@ -63,6 +63,9 @@ prometheus-pf: prometheus-info
 alertmanager-pf: alertmanager-info
 	$(ALERTMANAGER_PF_CMD)
 
+stop-pf:
+	@pkill -f "kubectl[[:space:]]port-forward" && echo "Port-forwards stopped" || echo "No port-forwards running"
+
 # All port-forwards in parallel
 pf: argocd-info grafana-info prometheus-info alertmanager-info
 	@$(ARGOCD_PF_CMD) & \
