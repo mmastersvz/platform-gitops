@@ -4,7 +4,7 @@ metadata:
   name: platform
   namespace: argocd
 spec:
-  description: Platform Project
+  description: Platform engineering — full cluster access
   sourceRepos:
     - '*'
   destinations:
@@ -13,3 +13,99 @@ spec:
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: team-a
+  namespace: argocd
+spec:
+  description: Team A — scoped to team-a namespace
+  sourceRepos:
+    - 'https://github.com/mmastersvz/platform-gitops.git'
+  destinations:
+    - namespace: team-a
+      server: https://kubernetes.default.svc
+  # Namespace-scoped resources teams are allowed to deploy
+  namespaceResourceWhitelist:
+    - group: 'apps'
+      kind: Deployment
+    - group: 'apps'
+      kind: StatefulSet
+    - group: 'apps'
+      kind: DaemonSet
+    - group: 'batch'
+      kind: Job
+    - group: 'batch'
+      kind: CronJob
+    - group: 'autoscaling'
+      kind: HorizontalPodAutoscaler
+    - group: 'policy'
+      kind: PodDisruptionBudget
+    - group: 'networking.k8s.io'
+      kind: Ingress
+    - group: ''
+      kind: Service
+    - group: ''
+      kind: ConfigMap
+    - group: ''
+      kind: Secret
+    - group: ''
+      kind: ServiceAccount
+  # No cluster-scoped resources (no ClusterRole, CRD, etc.)
+  clusterResourceWhitelist: []
+  roles:
+    - name: developer
+      description: Can view and sync team-a apps
+      policies:
+        - p, proj:team-a:developer, applications, get, team-a/*, allow
+        - p, proj:team-a:developer, applications, sync, team-a/*, allow
+      groups:
+        - team-a
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: team-b
+  namespace: argocd
+spec:
+  description: Team B — scoped to team-b namespace
+  sourceRepos:
+    - 'https://github.com/mmastersvz/platform-gitops.git'
+  destinations:
+    - namespace: team-b
+      server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+    - group: 'apps'
+      kind: Deployment
+    - group: 'apps'
+      kind: StatefulSet
+    - group: 'apps'
+      kind: DaemonSet
+    - group: 'batch'
+      kind: Job
+    - group: 'batch'
+      kind: CronJob
+    - group: 'autoscaling'
+      kind: HorizontalPodAutoscaler
+    - group: 'policy'
+      kind: PodDisruptionBudget
+    - group: 'networking.k8s.io'
+      kind: Ingress
+    - group: ''
+      kind: Service
+    - group: ''
+      kind: ConfigMap
+    - group: ''
+      kind: Secret
+    - group: ''
+      kind: ServiceAccount
+  clusterResourceWhitelist: []
+  roles:
+    - name: developer
+      description: Can view and sync team-b apps
+      policies:
+        - p, proj:team-b:developer, applications, get, team-b/*, allow
+        - p, proj:team-b:developer, applications, sync, team-b/*, allow
+      groups:
+        - team-b
