@@ -32,18 +32,10 @@ spec:
       kind: ValidatingWebhookConfiguration
       jqPathExpressions:
         - .webhooks[]?.clientConfig.caBundle
-    - group: monitoring.coreos.com
-      kind: PrometheusRule
-      jqPathExpressions:
-        - '.metadata.labels."argocd.argoproj.io/instance"'
-    - group: monitoring.coreos.com
-      kind: ServiceMonitor
-      jqPathExpressions:
-        - '.metadata.labels."argocd.argoproj.io/instance"'
   syncPolicy:
     automated:
       prune: true
-      selfHeal: true
+      selfHeal: false
     syncOptions:
       - CreateNamespace=true
       - RespectIgnoreDifferences=true
