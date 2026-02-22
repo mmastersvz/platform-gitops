@@ -40,3 +40,4 @@ spec:
       - CreateNamespace=true
       - RespectIgnoreDifferences=true
       - ServerSideApply=true
+      - ServerSideDiff=true
