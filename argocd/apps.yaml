@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps
+  name: team-a-apps
   namespace: argocd
 spec:
-  project: platform
+  project: team-a
   source:
     repoURL: https://github.com/mmastersvz/platform-gitops.git
     targetRevision: HEAD
-    path: apps
+    path: apps/team-a-app
     directory:
       recurse: true
   destination:
@@ -19,4 +19,27 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+      - CreateNamespace=false
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: team-b-apps
+  namespace: argocd
+spec:
+  project: team-b
+  source:
+    repoURL: https://github.com/mmastersvz/platform-gitops.git
+    targetRevision: HEAD
+    path: apps/team-b-app
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: team-b
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
