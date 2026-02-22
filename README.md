@@ -68,7 +68,7 @@ platform-gitops/
 ## ArgoCD applications
 
 | Application | Project | Source path | Destination |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `platform-root` | `platform` | `argocd/` | cluster-wide |
 | `infrastructure` | `platform` | `infrastructure/` | cluster-wide |
 | `tenants` | `platform` | `tenants/` | cluster-wide |
