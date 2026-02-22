@@ -17,7 +17,7 @@ spec:
         - name: sample-app
           image: platform-registry.localhost:5001/sample-app:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           resources:
             requests:
               cpu: 200m
