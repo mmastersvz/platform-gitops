@@ -44,4 +44,17 @@ alertmanager-pf:
 	@echo "Alertmanager → http://localhost:$(ALERTMANAGER_PORT)"
 	kubectl port-forward svc/monitoring-kube-prometheus-alertmanager -n $(MONITORING_NS) $(ALERTMANAGER_PORT):9093
 
-pf: argocd-pf grafana-pf prometheus-pf alertmanager-pf
+pf:
+	@echo "ArgoCD       → http://localhost:$(ARGOCD_PORT)"
+	@echo "  username: admin"
+	@printf "  password: "; kubectl get secret argocd-initial-admin-secret -n $(ARGOCD_NS) -o jsonpath='{.data.password}' | base64 -d; echo
+	@echo "Grafana      → http://localhost:$(GRAFANA_PORT)"
+	@printf "  username: "; kubectl get secret monitoring-grafana -n $(MONITORING_NS) -o jsonpath='{.data.admin-user}' | base64 -d; echo
+	@printf "  password: "; kubectl get secret monitoring-grafana -n $(MONITORING_NS) -o jsonpath='{.data.admin-password}' | base64 -d; echo
+	@echo "Prometheus   → http://localhost:$(PROMETHEUS_PORT)"
+	@echo "Alertmanager → http://localhost:$(ALERTMANAGER_PORT)"
+	@kubectl port-forward svc/argocd-self-server -n $(ARGOCD_NS) $(ARGOCD_PORT):80 & \
+	kubectl port-forward svc/monitoring-grafana -n $(MONITORING_NS) $(GRAFANA_PORT):80 & \
+	kubectl port-forward svc/monitoring-kube-prometheus-prometheus -n $(MONITORING_NS) $(PROMETHEUS_PORT):9090 & \
+	kubectl port-forward svc/monitoring-kube-prometheus-alertmanager -n $(MONITORING_NS) $(ALERTMANAGER_PORT):9093 & \
+	wait
