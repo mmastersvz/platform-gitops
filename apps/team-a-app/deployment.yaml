@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: sample-app
-          image: k3d-platform-registry.localhost:5001/sample-app:latest
+          image: platform-registry.localhost:5001/sample-app:latest
           ports:
             - containerPort: 8080
           resources:
