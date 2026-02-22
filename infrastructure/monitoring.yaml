@@ -10,6 +10,7 @@ spec:
     chart: kube-prometheus-stack
     targetRevision: 56.6.2
     helm:
+      skipCrds: true
       values: |
         grafana:
           adminPassword: admin
@@ -31,4 +32,3 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - RespectIgnoreDifferences=true
-      - Replace=true
