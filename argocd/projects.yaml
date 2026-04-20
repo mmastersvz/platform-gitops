@@ -3,6 +3,8 @@ kind: AppProject
 metadata:
   name: platform
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   description: Platform engineering — full cluster access
   sourceRepos:
@@ -19,6 +21,8 @@ kind: AppProject
 metadata:
   name: team-a
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   description: Team A — scoped to team-a namespace
   sourceRepos:
@@ -68,6 +72,8 @@ kind: AppProject
 metadata:
   name: team-b
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   description: Team B — scoped to team-b namespace
   sourceRepos:

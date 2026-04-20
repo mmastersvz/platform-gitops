@@ -3,6 +3,8 @@ kind: ResourceQuota
 metadata:
   name: team-b-quota
   namespace: team-b
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   hard:
     requests.cpu: "2"

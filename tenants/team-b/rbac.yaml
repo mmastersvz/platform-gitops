@@ -3,6 +3,8 @@ kind: Role
 metadata:
   name: developer
   namespace: team-b
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 rules:
   - apiGroups: [""]
     resources: ["pods", "pods/log", "pods/exec", "pods/portforward"]
@@ -34,6 +36,8 @@ kind: RoleBinding
 metadata:
   name: developer
   namespace: team-b
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 subjects:
   - kind: Group
     name: team-b
