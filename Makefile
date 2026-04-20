@@ -3,11 +3,13 @@ SHELL := /bin/bash
 
 MONITORING_NS     := monitoring
 ARGOCD_NS         := argocd
+ROLLOUTS_NS       := argo-rollouts
 
 ARGOCD_PORT       := 9080
-GRAFANA_PORT      := 9081
-PROMETHEUS_PORT   := 9082
-ALERTMANAGER_PORT := 9083
+ROLLOUTS_PORT     := 9081
+GRAFANA_PORT      := 9082
+PROMETHEUS_PORT   := 9083
+ALERTMANAGER_PORT := 9084
 
 # $(call decode-secret,NAMESPACE,SECRET,KEY)
 decode-secret = kubectl get secret $(2) -n $(1) -o jsonpath='{.data.$(3)}' | base64 -d
@@ -17,6 +19,7 @@ ARGOCD_PF_CMD       := kubectl port-forward svc/argocd-self-server -n $(ARGOCD_N
 GRAFANA_PF_CMD      := kubectl port-forward svc/monitoring-grafana -n $(MONITORING_NS) $(GRAFANA_PORT):80
 PROMETHEUS_PF_CMD   := kubectl port-forward svc/monitoring-kube-prometheus-prometheus -n $(MONITORING_NS) $(PROMETHEUS_PORT):9090
 ALERTMANAGER_PF_CMD := kubectl port-forward svc/monitoring-kube-prometheus-alertmanager -n $(MONITORING_NS) $(ALERTMANAGER_PORT):9093
+ROLLOUTS_PF_CMD     := kubectl port-forward svc/argo-rollouts-dashboard -n $(ROLLOUTS_NS) $(ROLLOUTS_PORT):3100
 
 init:
 	@echo "Initializing ArgoCD application..."
@@ -50,6 +53,9 @@ prometheus-info:
 alertmanager-info:
 	@echo "Alertmanager → http://localhost:$(ALERTMANAGER_PORT)"
 
+rollouts-info:
+	@echo "Rollouts     → http://localhost:$(ROLLBACK_PORT)"
+
 # Individual port-forwards (print info then forward)
 argocd-pf: argocd-info
 	$(ARGOCD_PF_CMD)
@@ -62,6 +68,9 @@ prometheus-pf: prometheus-info
 
 alertmanager-pf: alertmanager-info
 	$(ALERTMANAGER_PF_CMD)
+
+rollouts-pf: rollouts-info
+	$(ROLLOUTS_PF_CMD)
 
 stop-pf:
 	@pkill -f "kubectl[[:space:]]port-forward" && echo "Port-forwards stopped" || echo "No port-forwards running"
