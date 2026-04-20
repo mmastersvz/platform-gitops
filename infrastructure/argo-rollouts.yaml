@@ -1,31 +1,40 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
   name: argo-rollouts
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
-  project: platform
-  destination:
-    namespace: argo-rollouts
-    server: https://kubernetes.default.svc
-  source:
-    repoURL: https://argoproj.github.io/argo-helm
-    chart: argo-rollouts
-    targetRevision: 2.40.9
-    helm:
-      valuesObject:
-        # Optional but recommended customizations
-        crds:
-          install: true        # Installs CRDs with the chart (default: true)
-        controller:
-          replicas: 1          # 2 For HA in production
-          # logLevel: info
-        dashboard:
-          enabled: true
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true   # Recommended for CRDs
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            argo-rollouts: enabled
+  template:
+    metadata:
+      name: argo-rollouts
+    spec:
+      project: platform
+      destination:
+        namespace: argo-rollouts
+        server: "{{server}}"
+      source:
+        repoURL: https://argoproj.github.io/argo-helm
+        chart: argo-rollouts
+        targetRevision: 2.40.9
+        helm:
+          valuesObject:
+            crds:
+              install: true
+            controller:
+              replicas: 1
+            dashboard:
+              enabled: true
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
