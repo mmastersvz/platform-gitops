@@ -6,18 +6,26 @@ GitOps repository for the local [k3d](https://k3d.io) platform cluster, managed 
 
 ## Table of Contents
 
-- [Architecture Overview](#architecture-overview)
-- [Prerequisites](#prerequisites)
-- [Bootstrap](#bootstrap)
-- [Directory Structure](#directory-structure)
-- [Sync Waves](#sync-waves)
-- [Conditional Deployment via Cluster Labels](#conditional-deployment-via-cluster-labels)
-- [Secret Management](#secret-management)
-- [ArgoCD Applications](#argocd-applications)
-- [RBAC Model](#rbac-model)
-- [Port-Forwards (Local Dev)](#port-forwards-local-dev)
-- [Adding a New Team](#adding-a-new-team)
-- [Adding a New Infrastructure Component](#adding-a-new-infrastructure-component)
+- [platform-gitops](#platform-gitops)
+  - [Table of Contents](#table-of-contents)
+  - [Architecture Overview](#architecture-overview)
+  - [Prerequisites](#prerequisites)
+  - [Bootstrap](#bootstrap)
+    - [Infisical Machine Identity (one-time, imperative)](#infisical-machine-identity-one-time-imperative)
+  - [Directory Structure](#directory-structure)
+  - [Sync Waves](#sync-waves)
+  - [Conditional Deployment via Cluster Labels](#conditional-deployment-via-cluster-labels)
+  - [Secret Management](#secret-management)
+    - [Adding a new secret](#adding-a-new-secret)
+  - [ArgoCD Applications](#argocd-applications)
+  - [RBAC Model](#rbac-model)
+    - [Kubernetes RBAC](#kubernetes-rbac)
+    - [ArgoCD AppProject](#argocd-appproject)
+  - [Port-Forwards (Local Dev)](#port-forwards-local-dev)
+  - [Adding a New Team](#adding-a-new-team)
+  - [Adding a New Infrastructure Component](#adding-a-new-infrastructure-component)
+    - [Always-on component](#always-on-component)
+    - [Conditionally deployed component](#conditionally-deployed-component)
 
 ---
 
@@ -192,7 +200,7 @@ flowchart LR
 
     css -->|argo-rollouts: enabled| ar["ApplicationSet\nargo-rollouts"]
     css -->|cert-manager: enabled| cm["ApplicationSet\ncert-manager"]
-    css -->|kargo: enabled\n<i>(commented out)</i>| kg["ApplicationSet\nkargo"]
+    css -->|"kargo: enabled\n*(commented out)*"| kg["ApplicationSet\nkargo"]
 
     ar --> ar_app["Application\nargo-rollouts\n→ argo-rollouts ns"]
     cm --> cm_app["Application\ncert-manager\n→ cert-manager ns"]
