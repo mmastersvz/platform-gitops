@@ -16,6 +16,7 @@ GitOps repository for the local [k3d](https://k3d.io) platform cluster, managed 
   - [Sync Waves](#sync-waves)
   - [Conditional Deployment via Cluster Labels](#conditional-deployment-via-cluster-labels)
   - [Secret Management](#secret-management)
+    - [Secrets reference](#secrets-reference)
     - [Adding a new secret](#adding-a-new-secret)
   - [ArgoCD Applications](#argocd-applications)
   - [RBAC Model](#rbac-model)
@@ -241,6 +242,70 @@ flowchart TD
     es -->|creates| secret
     secret -->|mounted by| kargo
 ```
+
+### Secrets reference
+
+All secrets that must exist in the cluster before or during bootstrap, with generation instructions.
+
+---
+
+#### `platform-gitops-repo` — GitHub PAT (ArgoCD repo credential)
+
+**Namespace:** `argocd` | **Created by:** `make init` (interactive prompt)
+
+ArgoCD needs read access to this repo. Create a [fine-grained PAT](https://github.com/settings/tokens?type=beta) with **Contents: Read** on `platform-gitops`, then run:
+
+```bash
+make init   # prompts for the PAT — does not echo to terminal
+```
+
+---
+
+#### `infisical-machine-identity` — Infisical Kubernetes Auth
+
+**Namespace:** `external-secrets` | **Created by:** manual `kubectl create secret`
+
+The `ClusterSecretStore` authenticates to Infisical using [Kubernetes Auth](https://infisical.com/docs/documentation/platform/identities/kubernetes-auth). The `identityId` is the UUID shown on the machine identity detail page.
+
+```
+Infisical → Access Control → Machine Identities → <your identity> → copy ID
+```
+
+```bash
+kubectl create secret generic infisical-machine-identity \
+  --namespace external-secrets \
+  --from-literal=identityId=<uuid-from-infisical>
+```
+
+This secret is intentionally not in git and must be created before ArgoCD syncs `secret-store`.
+
+---
+
+#### `kargo-admin-credentials` — Kargo admin password + signing key
+
+**Namespace:** `kargo` | **Created by:** External Secrets Operator (pulled from Infisical)
+
+The `kargo-credentials.yaml` ExternalSecret pulls two keys from Infisical and creates this Secret automatically. You must add the values to Infisical first.
+
+**`KARGO_ADMIN_PASSWORD_HASH`** — bcrypt hash of your chosen admin password:
+
+```bash
+# requires: apt install apache2-utils  /  brew install httpd
+htpasswd -bnBC 10 "" your-password | tr -d ':\n'
+
+# or with Python (pip install bcrypt)
+python3 -c "import bcrypt; print(bcrypt.hashpw(b'your-password', bcrypt.gensalt(10)).decode())"
+```
+
+**`KARGO_ADMIN_TOKEN_SIGNING_KEY`** — random string used to sign JWTs (no format requirement):
+
+```bash
+openssl rand -base64 48
+```
+
+Add both values to Infisical under project `mmastersvz-ztk-z` / environment `dev` using the exact key names `KARGO_ADMIN_PASSWORD_HASH` and `KARGO_ADMIN_TOKEN_SIGNING_KEY`. The ExternalSecret will sync them into the cluster within the configured `refreshInterval`.
+
+---
 
 ### Adding a new secret
 
