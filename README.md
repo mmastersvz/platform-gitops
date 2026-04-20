@@ -118,7 +118,7 @@ platform-gitops/
 │   ├── external-secrets.yaml           # External Secrets Operator (Helm)
 │   ├── secret-store.yaml               # Application → infrastructure/secret-store/
 │   ├── secret-store/
-│   │   └── cluster-secret-store.yaml   # ClusterSecretStore: Infisical (mmastersvz/development)
+│   │   └── cluster-secret-store.yaml   # ClusterSecretStore: Infisical (mmastersvz-ztk-z/dev)
 │   ├── ingress-nginx.yaml              # Ingress controller (Helm)
 │   ├── monitoring.yaml                 # kube-prometheus-stack: Prometheus + Grafana + Alertmanager
 │   ├── argo-rollouts.yaml              # ApplicationSet — conditional on argo-rollouts label
@@ -225,7 +225,7 @@ Secrets are managed via [External Secrets Operator](https://external-secrets.io)
 
 ```mermaid
 flowchart TD
-    infisical["Infisical\napp.infisical.com\nproject: mmastersvz\nenv: development"]
+    infisical["Infisical\napp.infisical.com\nproject: mmastersvz-ztk-z\nenv: dev"]
 
     subgraph cluster["Kubernetes Cluster"]
         mi["Secret: infisical-machine-identity\n<i>ns: external-secrets</i>\n<i>created imperatively — not in git</i>"]
