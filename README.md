@@ -87,17 +87,18 @@ This will:
 2. Apply the `platform` AppProject
 3. Apply the root App-of-Apps, which recursively syncs this repo
 
-### Infisical Machine Identity (one-time, imperative)
+### Infisical Credentials (one-time, imperative)
 
-The `ClusterSecretStore` authenticates with Infisical using Kubernetes Auth. Before syncing, create the machine identity Secret manually — this is intentionally not committed to git:
+The `ClusterSecretStore` authenticates with Infisical using Universal Auth. Before syncing, create the credentials Secret manually — this is intentionally not committed to git:
 
 ```bash
-kubectl create secret generic infisical-machine-identity \
+kubectl create secret generic infisical-credentials \
   --namespace external-secrets \
-  --from-literal=identityId=<your-machine-identity-id>
+  --from-literal=clientId=<your-client-id> \
+  --from-literal=clientSecret=<your-client-secret>
 ```
 
-Get the identity ID from [Infisical](https://app.infisical.com) → Project Settings → Machine Identities → Kubernetes Auth.
+Get the client ID and secret from [Infisical](https://app.infisical.com) → Organization Settings → Machine Identities → Universal Auth.
 
 ---
 
