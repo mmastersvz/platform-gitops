@@ -345,7 +345,7 @@ spec:
 | `argocd-self` | Application | `platform` | Helm: [`argo-cd@5.51.6`](https://artifacthub.io/packages/helm/argo-cd/argo-cd) | `argocd` | always |
 | `ingress-nginx` | Application | `platform` | Helm: [`ingress-nginx@4.9.0`](https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx) | `ingress-nginx` | always |
 | `monitoring` | Application | `platform` | Helm: [`kube-prometheus-stack@56.6.2`](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack) | `monitoring` | always |
-| `external-secrets` | Application | `platform` | Helm: [`external-secrets@0.9.11`](https://artifacthub.io/packages/helm/external-secrets-operator/external-secrets) | `external-secrets` | always |
+| `external-secrets` | Application | `platform` | Helm: [`external-secrets@0.10.3`](https://artifacthub.io/packages/helm/external-secrets-operator/external-secrets) | `external-secrets` | always |
 | `secret-store` | Application | `platform` | `infrastructure/secret-store/` | `external-secrets` | always |
 | `argo-rollouts` | ApplicationSet | `platform` | Helm: [`argo-rollouts@2.40.9`](https://artifacthub.io/packages/helm/argo-rollouts/argo-rollouts) | `argo-rollouts` | `argo-rollouts: enabled` |
 | `cert-manager` | ApplicationSet | `platform` | Helm: [`cert-manager@1.20.2`](https://artifacthub.io/packages/helm/cert-manager/cert-manager) | `cert-manager` | `cert-manager: enabled` |
