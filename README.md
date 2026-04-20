@@ -316,6 +316,7 @@ Add both values to Infisical under project `mmastersvz-ztk-z` / environment `dev
 ```yaml
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
+
 metadata:
   name: my-secret
   namespace: team-a
