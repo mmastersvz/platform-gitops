@@ -1,24 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: infrastructure
+  name: kargo-extras
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "29"
 spec:
   project: platform
   source:
     repoURL: https://github.com/mmastersvz/platform-gitops.git
     targetRevision: HEAD
-    path: infrastructure
+    path: infrastructure/kargo-extras
     directory:
       recurse: false
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: kargo
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - ServerSideApply=true
+      - CreateNamespace=true
