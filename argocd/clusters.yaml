@@ -7,6 +7,7 @@ metadata:
     argocd.argoproj.io/secret-type: cluster
     argo-rollouts: enabled
     cert-manager: enabled
+    # kargo: enabled
 stringData:
   name: in-cluster
   server: https://kubernetes.default.svc
