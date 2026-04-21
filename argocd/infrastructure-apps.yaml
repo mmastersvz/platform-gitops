@@ -22,11 +22,13 @@ spec:
       jsonPointers:
         - /status
         - /metadata/labels/argocd.argoproj.io~1instance
+        - /metadata/annotations/argocd.argoproj.io~1tracking-id
     - group: argoproj.io
       kind: ApplicationSet
       jsonPointers:
         - /status
         - /metadata/labels/argocd.argoproj.io~1instance
+        - /metadata/annotations/argocd.argoproj.io~1tracking-id
   syncPolicy:
     automated:
       prune: true
