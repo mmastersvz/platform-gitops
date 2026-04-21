@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: sample-app
-          image: platform-registry.localhost:5001/sample-app:latest
+          image: nginx:stable-alpine
           ports:
             - containerPort: 80
           resources:
